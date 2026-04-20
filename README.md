@@ -2,27 +2,36 @@
 
 AKI° is an Open Source document assistant designed to help comply with legal and regulatory requirements when working with sensitive documents. 
 
-By running all AI processing locally, AKI° ensures that confidential files and prompts never leave your device—helping you avoid accidental data leaks and stay on the right side of the law (e.g., GDPR, attorney-client privilege, or other professional secrecy obligations). 
+By running all AI processing locally, AKI° ensures that confidential files and prompts never leave your device—helping you avoid accidental data leaks and stay on the right side of the law (e.g., GDPR, attorney/client privilege, or other professional secrecy obligations). 
 
-Upload PDFs, extract their text, and ask an AI to summarise or answer questions about them—all powered by a local Large Language Model (LLM) via [Ollama](https://ollama.com).
 
-#### Ollama and Phi-3: Local AI Models
+#### Local AI Models
 
 This project uses [Ollama](https://ollama.com/) to run large language models (LLMs) locally, ensuring your data never leaves your machine. Ollama is an open-source tool that lets you run and manage LLMs on your own device.
 
-#### What is Ollama?
+#### Ollama
 
 Ollama is a platform for running open-source LLMs locally. It provides a simple way to download, run, and interact with models like Llama, Phi-3, and others, without sending data to external servers.
 
-#### What is Phi-3?
+#### Phi-3
 
-Phi-3 is a family of lightweight, high-performance language models developed by Microsoft. In this project, you can run Phi-3 locally using Ollama for private, fast, and secure AI-powered document management.
+[Phi-3](https://azure.microsoft.com/en-us/blog/introducing-phi-3-redefining-whats-possible-with-slms/) is a family of lightweight, high-performance language models developed by Microsoft. In this project, you can run Phi-3 locally using Ollama for private, fast, and secure AI-powered document management.
 
-#### How to Install Ollama and Phi-3
+Many other LLMs, both free and expensive are available.
+
+#### Prerequisites
+
+| Tool | Version | Notes |
+|------|---------|-------|
+| [Node.js](https://nodejs.org) | 20 LTS or later | |
+| [Yarn](https://yarnpkg.com) | 4.x (Berry) | Enabled via `corepack enable` |
+| [Ollama](https://ollama.com) | latest | Runs the local LLM |
+
+#### Install Ollama with Phi-3
 
 1. **Install Ollama**
 	- Visit [https://ollama.com/download](https://ollama.com/download) and download the installer for your operating system (macOS, Windows, or Linux).
-	- Follow the installation instructions on the website.
+	- Follow the installation instructions on the website, but command line is best
 
 2. **Start the Ollama server**
 	- In your terminal, run:
@@ -38,37 +47,28 @@ Phi-3 is a family of lightweight, high-performance language models developed by 
 	- This will download the Phi-3 model and start it locally.
 
 4. **(Optional) Run other models**
-	- You can also run other models like CodeLlama:
+	- You can also run other models for instance CodeLlama:
 	  ```sh
 	  ollama run codellama
 	  ```
 
-**Note:** The `package.json` includes scripts to start Ollama and run these models for convenience.
+**Note:** `package.json` includes scripts to start Ollama and run these models for convenience.
 
-#### Prerequisites
-
-| Tool | Version | Notes |
-|------|---------|-------|
-| [Node.js](https://nodejs.org) | 20 LTS or later | |
-| [Yarn](https://yarnpkg.com) | 4.x (Berry) | Enabled via `corepack enable` |
-| [Ollama](https://ollama.com) | latest | Runs the local LLM |
-
-
-#### 1. Clone the repository
+1. Clone the repository
 
 ```bash
 git clone https://github.com/goldlabelapps/aki.git
 cd aki
 ```
 
-#### 2. Install dependencies
+2. Install dependencies
 
 ```bash
 corepack enable   # activates Yarn 4 from package.json#packageManager
 yarn install
 ```
 
-#### 3. Install Ollama and pull the model
+3. Install Ollama and pull the model
 
 Download Ollama from <https://ollama.com/download>, then pull the default model:
 
@@ -76,7 +76,7 @@ Download Ollama from <https://ollama.com/download>, then pull the default model:
 ollama pull phi3
 ```
 
-#### 4. Start AKI°
+4. Start AKI°
 
 This command starts the Ollama LLM server and loads the phi3 model.
 
