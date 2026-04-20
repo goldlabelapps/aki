@@ -45,54 +45,30 @@ Phi-3 is a family of lightweight, high-performance language models developed by 
 
 **Note:** The `package.json` includes scripts to start Ollama and run these models for convenience.
 
-#### Features
-
-- 📄 Upload and manage PDF documents
-- 🔍 Automatic text extraction (native text layer + OCR fallback)
-- 🤖 AI summarisation powered by a local LLM (phi3 by default)
-- 🗄️ SQLite database — zero external database setup
-
----
-
-## Prerequisites
+#### Prerequisites
 
 | Tool | Version | Notes |
 |------|---------|-------|
 | [Node.js](https://nodejs.org) | 20 LTS or later | |
 | [Yarn](https://yarnpkg.com) | 4.x (Berry) | Enabled via `corepack enable` |
 | [Ollama](https://ollama.com) | latest | Runs the local LLM |
-| [poppler-utils](https://poppler.freedesktop.org) | any | Provides `pdftotext` / `pdftoppm` |
 
-### Install poppler-utils
 
-```bash
-# macOS
-brew install poppler
-
-# Ubuntu / Debian
-sudo apt-get install poppler-utils
-
-# Windows (via scoop)
-scoop install poppler
-```
-
-## Quick Start
-
-### 1. Clone the repository
+#### 1. Clone the repository
 
 ```bash
 git clone https://github.com/goldlabelapps/aki.git
 cd aki
 ```
 
-### 2. Install dependencies
+#### 2. Install dependencies
 
 ```bash
 corepack enable   # activates Yarn 4 from package.json#packageManager
 yarn install
 ```
 
-### 3. Install Ollama and pull the model
+#### 3. Install Ollama and pull the model
 
 Download Ollama from <https://ollama.com/download>, then pull the default model:
 
@@ -100,21 +76,12 @@ Download Ollama from <https://ollama.com/download>, then pull the default model:
 ollama pull phi3
 ```
 
-### 4. Start AKI°
-
-```bash
-yarn start
-```
+#### 4. Start AKI°
 
 This command starts the Ollama LLM server and loads the phi3 model.
 
-#### Project structure
-
-```
-aki/
-├── aki.db.sql            # SQLite schema (no data)
-├── start.mjs             # Cross-platform launcher
-└── package.json          # Root package
+```bash
+yarn start
 ```
 
 #### Test Prompts
