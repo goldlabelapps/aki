@@ -51,20 +51,6 @@ Phi-3 is a family of lightweight, high-performance language models developed by 
 - 🔍 Automatic text extraction (native text layer + OCR fallback)
 - 🤖 AI summarisation powered by a local LLM (phi3 by default)
 - 🗄️ SQLite database — zero external database setup
-- 🌐 TypeScript Next.js frontend + Express backend
-
-#### Architecture
-
-```
-Browser  ──►  Next.js frontend   (http://localhost:1975)
-                    │
-                    ▼
-              Express backend    (http://localhost:4000)
-                    │
-          ┌─────────┴──────────┐
-          │                    │
-       SQLite (aki.db)    Ollama LLM     (http://localhost:11434)
-```
 
 ---
 
@@ -114,37 +100,21 @@ Download Ollama from <https://ollama.com/download>, then pull the default model:
 ollama pull phi3
 ```
 
-> **Tip:** You can swap to a different model by editing `start.mjs` and the
-> model name in `aki-backend/src/routes/ki/summarise.ts`.
-
 ### 4. Start AKI°
 
 ```bash
 yarn start
 ```
 
-This command starts 2 concurrent processes in your terminal:
-
-| Process | What it does |
-|---------|-------------|
-| `ollama serve` | Runs the Ollama LLM server |
-| `ollama run phi3` | Loads the phi3 model |
+This command starts the Ollama LLM server and loads the phi3 model.
 
 #### Project structure
 
 ```
 aki/
-├── aki-backend/          # Express + TypeScript API
-│   └── src/
-│       ├── lib/          # Database helpers, shared utils
-│       └── routes/       # /db  /ki  /log  /pdf  /test
-├── aki-frontend/         # Next.js 15 + MUI frontend
-│   └── src/
-│       ├── app/          # Next.js app router pages
-│       └── gl-core/      # Shared Redux store + UI primitives
 ├── aki.db.sql            # SQLite schema (no data)
 ├── start.mjs             # Cross-platform launcher
-└── package.json          # Yarn workspaces root
+└── package.json          # Root package
 ```
 
 #### Test Prompts
