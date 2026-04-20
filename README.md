@@ -81,54 +81,172 @@ What does the GDPR mean for a law firm in Europe that processes personal data?
 
 ---
 
-### AI in law
+## What is AKI?
 
-Wie könnten große Sprachmodelle deutschen Anwaltskanzleien bei der Recherche helfen?  
+AKI is an open-source, privacy-first document assistant. Upload PDFs, extract their text, and ask an AI to summarise or answer questions about them — all powered by a local Large Language Model (LLM) via [Ollama](https://ollama.com). Your files and prompts never touch a third-party server.
 
-How could large language models help firms with legal research?
+**Key features**
+- 📄 Upload and manage PDF documents
+- 🔍 Automatic text extraction (native text layer + OCR fallback)
+- 🤖 AI summarisation powered by a local LLM (phi3 by default)
+- 🗄️ SQLite database — zero external database setup
+- 🌐 Next.js frontend + Express backend — both written in TypeScript
 
+---
 
+## Architecture
 
-Welche Risiken entstehen, wenn Anwälte vertrauliche Akten an eine öffentliche KI wie ChatGPT schicken?  
+```
+Browser  ──►  Next.js frontend   (http://localhost:1975)
+                    │
+                    ▼
+              Express backend    (http://localhost:4000)
+                    │
+          ┌─────────┴──────────┐
+          │                    │
+       SQLite (aki.db)    Ollama LLM     (http://localhost:11434)
+```
 
-What risks arise if lawyers send confidential files to a public AI service like ChatGPT?
+---
 
+## Prerequisites
 
+| Tool | Version | Notes |
+|------|---------|-------|
+| [Node.js](https://nodejs.org) | 20 LTS or later | |
+| [Yarn](https://yarnpkg.com) | 4.x (Berry) | Enabled via `corepack enable` |
+| [Ollama](https://ollama.com) | latest | Runs the local LLM |
+| [poppler-utils](https://poppler.freedesktop.org) | any | Provides `pdftotext` / `pdftoppm` |
 
-Nenne Beispiele, wie KI den Arbeitsalltag in einer Kanzlei erleichtern könnte, ohne Mandantendaten zu gefährden.  
+### Install poppler-utils
 
-Give examples of how AI could make day‑to‑day work in a law firm easier without endangering client data.
+```bash
+# macOS
+brew install poppler
 
-### Ring‑fencing and compliance
+# Ubuntu / Debian
+sudo apt-get install poppler-utils
 
-Was bedeutet es technisch, ein LLM abzuschotten, damit keine Daten das interne Netzwerk verlassen?  
+# Windows (via scoop)
+scoop install poppler
+```
 
-What does it technically mean to ring‑fence an LLM so that no data leaves the internal network?
+---
 
+## Quick Start
 
+### 1. Clone the repository
 
-Wie kann ein abgeschottetes LLM dabei helfen, die Geheimhaltungspflichten einer Kanzlei einzuhalten?  
+```bash
+git clone https://github.com/goldlabelapps/aki.git
+cd aki
+```
 
-How can a ring‑fenced LLM help a law firm meet its confidentiality obligations?
+### 2. Install dependencies
 
+```bash
+corepack enable   # activates Yarn 4 from package.json#packageManager
+yarn install
+```
 
+### 3. Install Ollama and pull the model
 
-Wenn eine deutsche Kanzlei ein internes LLM einsetzt, welche rechtlichen Anforderungen müsste sie dabei beachten?  
+Download Ollama from <https://ollama.com/download>, then pull the default model:
 
-If a German law firm uses an internal LLM, what legal requirements would it need to observe?
+```bash
+ollama pull phi3
+```
 
-### Directly exploring the concern you raised
+> **Tip:** You can swap to a different model by editing `start.mjs` and the
+> model name in `aki-backend/src/routes/ki/summarise.ts`.
 
-Hilft der Ansatz eines abgeschotteten LLMs dabei, die rechtlichen Herausforderungen von deutschen Kanzleien zu lösen, die Angst haben, dass ihre Mitarbeiter sensible Daten an externe KI-Dienste wie OpenAI schicken?  
+### 4. Start AKI
 
-Does the approach of using a ring‑fenced LLM help solve the legal challenges faced by German law firms that are afraid their employees might send sensitive data to external AI services like OpenAI?
+```bash
+yarn start
+```
 
-Warum ist es für deutsche Kanzleien gefährlich, ein öffentliches LLM zu verwenden, und wie unterscheidet sich ein abgeschottetes LLM in diesem Punkt?  
+This command starts four concurrent processes in your terminal:
 
-Why is it dangerous for firms to use a public LLM, and how does a ring‑fenced LLM differ in this respect?
+| Process | What it does |
+|---------|-------------|
+| `ollama serve` | Runs the Ollama LLM server |
+| `ollama run phi3` | Loads the phi3 model |
+| Next.js dev server | Frontend on port **1975** |
+| Express dev server | Backend API on port **4000** |
 
+Your browser will open automatically at <http://localhost:1975/database/table/pdfs> after ~5 seconds.
 
+---
 
-Welche organisatorischen Maßnahmen sollte eine Kanzlei ergänzend zu einem abgeschotteten LLM ergreifen, um Datenlecks zu verhindern?  
+## Running services individually
 
-What organizational measures should a law firm take in addition to a ring‑fenced LLM to prevent data leaks?
+```bash
+# Frontend only
+yarn frontend
+
+# Backend only
+yarn backend
+
+# Ollama server only
+yarn ollama
+
+# Backend TypeScript watch (hot-reload)
+cd aki-backend && yarn dev
+
+# Frontend Next.js watch
+cd aki-frontend && yarn dev
+```
+
+---
+
+## Docker (alternative setup)
+
+If you prefer not to install Node.js and Yarn locally, use Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+This builds a container for the Node.js app and starts an Ollama sidecar. Once running, pull the model inside the Ollama container:
+
+```bash
+docker compose exec ollama ollama pull phi3
+```
+
+Then open <http://localhost:1975/database/table/pdfs>.
+
+> **GPU acceleration:** Add `deploy.resources.reservations.devices` to the
+> `ollama` service in `docker-compose.yml` to pass through an NVIDIA GPU.
+
+---
+
+## Project structure
+
+```
+aki/
+├── aki-backend/          # Express + TypeScript API
+│   └── src/
+│       ├── lib/          # Database helpers, shared utils
+│       └── routes/       # /db  /ki  /log  /pdf  /test
+├── aki-frontend/         # Next.js 15 + MUI frontend
+│   └── src/
+│       ├── app/          # Next.js app router pages
+│       └── gl-core/      # Shared Redux store + UI primitives
+├── aki.db.sql            # SQLite schema (no data)
+├── start.mjs             # Cross-platform launcher
+└── package.json          # Yarn workspaces root
+```
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get involved.
+
+---
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
+
