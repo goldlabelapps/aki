@@ -1,4 +1,4 @@
-# AKI
+# AKI°
 ## Abgeschottete künstliche Intelligenz (Air-gapped AI)
 
 #### Ollama and Phi-3: Local AI Models
