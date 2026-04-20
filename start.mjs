@@ -31,10 +31,6 @@ runScript('ollama');
 runScript('phi3');
 // runScript('codellama');
 
-// Start the frontend and backend dev servers
-runScript('frontend');
-runScript('backend');
-
 // Open the browser once the servers have had time to boot
 setTimeout(() => {
   const targetUrl = 'http://localhost:1975/database/table/pdfs';
