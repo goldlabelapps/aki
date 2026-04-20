@@ -29,11 +29,7 @@ export function initDB(db: Database.Database) {
       );
     `);
 
-    // ✅ insert into the pdfs table we just created
-    const stmt = db.prepare(`INSERT INTO pdfs (name) VALUES (?)`);
-    stmt.run('Hello from initDB');
-
-    console.log(`[initDB] Table created and test record inserted.`);
+    console.log(`[initDB] Table created.`);
   } else {
     console.log(`[initDB] Database already exists. Skipping init.`);
   }
