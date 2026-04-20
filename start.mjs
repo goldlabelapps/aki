@@ -1,36 +1,43 @@
-// /Users/goldlabel/GitHub/abgeschottet-ki/start.mjs
+// start.mjs — cross-platform launcher for AKI
+// Works on macOS, Linux, and Windows.
 
-import { exec } from 'child_process';
-import open from 'open'; // yarn add open
+import { spawn } from 'child_process';
+import open from 'open';
 
-// Absolute path to your project root
-const projectPath = '/Users/goldlabel/GitHub/aki';
+const isWindows = process.platform === 'win32';
+const shell = isWindows ? 'cmd' : 'sh';
+const shellFlag = isWindows ? '/c' : '-c';
 
-// Helper: run a command in a new Terminal window/tab with proper cwd
-function runInNewTerminal(command) {
-  const fullCommand = `cd ${projectPath} && ${command}`;
-  const script = `tell application "Terminal"
-    activate
-    do script "${fullCommand}"
-  end tell`;
-  exec(`osascript -e '${script}'`, (err, stdout, stderr) => {
-    if (err) {
-      console.error(`Error starting "${command}":`, err);
-    }
-    if (stderr) console.error(stderr);
-    if (stdout) console.log(stdout);
+/**
+ * Spawn a yarn script as a child process, inheriting stdio so all output
+ * flows through to the current terminal.
+ */
+function runScript(script) {
+  console.log(`[AKI] Starting: yarn ${script}`);
+  const child = spawn(shell, [shellFlag, `yarn ${script}`], {
+    stdio: 'inherit',
+    cwd: process.cwd(),
   });
+  child.on('error', (err) => {
+    console.error(`[AKI] Failed to start "yarn ${script}":`, err.message);
+  });
+  return child;
 }
 
-// Start each process in its own Terminal window/tab
-runInNewTerminal('yarn ollama');
-runInNewTerminal('yarn codellama');
-runInNewTerminal('yarn frontend');
-runInNewTerminal('yarn backend');
+// Start Ollama server and the chosen model
+runScript('ollama');
 
-// Open browser after a delay
+// Switch the comment below to use a different model
+runScript('phi3');
+// runScript('codellama');
+
+// Start the frontend and backend dev servers
+runScript('frontend');
+runScript('backend');
+
+// Open the browser once the servers have had time to boot
 setTimeout(() => {
   const targetUrl = 'http://localhost:1975/database/table/pdfs';
-  console.log(`aki-frontend open on ${targetUrl}`);
+  console.log(`[AKI] Opening ${targetUrl}`);
   open(targetUrl);
 }, 5000);

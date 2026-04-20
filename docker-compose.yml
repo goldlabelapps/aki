@@ -1,0 +1,44 @@
+services:
+  # ── Local LLM ────────────────────────────────────────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: aki-ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: unless-stopped
+    # Uncomment the block below to enable NVIDIA GPU pass-through:
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # ── AKI app (frontend + backend) ─────────────────────────────────────────────
+  aki:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aki-app
+    ports:
+      - "1975:1975"   # Next.js frontend
+      - "4000:4000"   # Express backend
+    volumes:
+      - aki_data:/app/data                           # SQLite database
+      - aki_uploads:/app/aki-frontend/public/pdf/uploads
+      - aki_thumbnails:/app/aki-frontend/public/png/thumbnails
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - AKI_DB_PATH=/app/data/aki.db
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+  aki_data:
+  aki_uploads:
+  aki_thumbnails:
