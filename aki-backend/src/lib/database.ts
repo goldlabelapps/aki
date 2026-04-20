@@ -5,12 +5,16 @@ import path from 'path';
 import Database from 'better-sqlite3';
 import { initDB } from './sql/initDB';
 
-const dbDir = path.resolve(process.cwd(), '..');
+// Allow the DB path to be overridden via an environment variable so that
+// Docker volumes and other deployment setups can point at an arbitrary location.
+const dbPath = process.env.AKI_DB_PATH
+  ? path.resolve(process.env.AKI_DB_PATH)
+  : path.join(path.resolve(process.cwd(), '..'), 'aki.db');
+
+const dbDir = path.dirname(dbPath);
 if (!fs.existsSync(dbDir)) {
   fs.mkdirSync(dbDir, { recursive: true });
 }
-
-const dbPath = path.join(dbDir, 'aki.db');
 
 export const db = new Database(dbPath);
 
