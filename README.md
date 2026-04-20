@@ -1,7 +1,6 @@
-
 ## AKI° Abgeschottete künstliche Intelligenz (Air-gapped AI)
 
-AKI° is an open-source document assistant designed to help comply with legal and regulatory requirements when working with sensitive documents. 
+AKI° is an Open Source document assistant designed to help comply with legal and regulatory requirements when working with sensitive documents. 
 
 By running all AI processing locally, AKI° ensures that confidential files and prompts never leave your device—helping you avoid accidental data leaks and stay on the right side of the law (e.g., GDPR, attorney-client privilege, or other professional secrecy obligations). 
 
@@ -45,34 +44,6 @@ Phi-3 is a family of lightweight, high-performance language models developed by 
 	  ```
 
 **Note:** The `package.json` includes scripts to start Ollama and run these models for convenience.
-
-#### Test Prompts
-
-> Some simple propmts to try giving the LLM. See if AKI can give a sensible answer
-
-Explain what machine learning weights are in simple terms
-
-Wie könnten große Sprachmodelle deutschen Anwaltskanzleien bei der Recherche helfen?
-
-
-
-#### General legal reasoning
-
-What does the GDPR mean for a law firm in Europe that processes personal data?
-
-What risks arise if companies send confidential files to a public AI service like ChatGPT?
-
-Erkläre in einfachen Worten, was das Berufsgeheimnis für deutsche Rechtsanwälte bedeutet.  
-
-Explain in simple terms what professional secrecy means for UK lawyers.
-
-Welche Pflichten zur Vertraulichkeit haben deutsche Kanzleien gegenüber ihren Mandanten?  
-
-What confidentiality obligations do firms have toward their clients?
-
-Was bedeutet DSGVO für eine Anwaltskanzlei in Deutschland, die personenbezogene Daten verarbeitet?  
-
-
 
 #### Features
 
@@ -152,58 +123,14 @@ ollama pull phi3
 yarn start
 ```
 
-This command starts four concurrent processes in your terminal:
+This command starts 2 concurrent processes in your terminal:
 
 | Process | What it does |
 |---------|-------------|
 | `ollama serve` | Runs the Ollama LLM server |
 | `ollama run phi3` | Loads the phi3 model |
-| Next.js dev server | Frontend on port **1975** |
-| Express dev server | Backend API on port **4000** |
 
-Your browser will open automatically at <http://localhost:1975/database/table/pdfs> after ~5 seconds.
-
-## Running services individually
-
-```bash
-# Frontend only
-yarn frontend
-
-# Backend only
-yarn backend
-
-# Ollama server only
-yarn ollama
-
-# Backend TypeScript watch (hot-reload)
-cd aki-backend && yarn dev
-
-# Frontend Next.js watch
-cd aki-frontend && yarn dev
-```
-
-## Docker (alternative setup)
-
-If you prefer not to install Node.js and Yarn locally, use Docker Compose:
-
-```bash
-docker compose up --build
-```
-
-This builds a container for the Node.js app and starts an Ollama sidecar. Once running, pull the model inside the Ollama container:
-
-```bash
-docker compose exec ollama ollama pull phi3
-```
-
-Then open <http://localhost:1975/database/table/pdfs>.
-
-> **GPU acceleration:** Add `deploy.resources.reservations.devices` to the
-> `ollama` service in `docker-compose.yml` to pass through an NVIDIA GPU.
-
----
-
-## Project structure
+#### Project structure
 
 ```
 aki/
@@ -220,13 +147,27 @@ aki/
 └── package.json          # Yarn workspaces root
 ```
 
----
+#### Test Prompts
+
+> Simple cut+paste propmts to try. See if AKI° can give a sensible answer
+
+Explain what machine learning weights which make LLM's work are in kindergarten terms
+
+Wie könnten große Sprachmodelle deutschen Anwaltskanzleien bei der Recherche helfen?
+
+What does the GDPR mean for a law firm in Europe that processes personal data?
+
+What risks arise if companies send confidential files to a public AI service like ChatGPT?
+
+Erkläre in einfachen Worten, was das Berufsgeheimnis für deutsche Rechtsanwälte bedeutet. 
+
+Explain in simple terms what professional secrecy means for UK lawyers.
+
+What confidentiality obligations do firms have toward their clients?
 
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to get involved.
-
----
 
 ## License
 
