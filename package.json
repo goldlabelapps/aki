@@ -3,11 +3,9 @@
   "name": "aki",
   "description": "Ringfenced AI powered Document Management for SMEs",
   "scripts": {
-    "dev": "clear && yarn start",
     "start": "node start.mjs",
     "ollama": "ollama serve",
-    "phi3": "ollama run phi3",
-    "codellama": "ollama run codellama"
+    "phi3": "ollama run phi3"
   },
   "packageManager": "yarn@4.3.1",
   "dependencies": {
