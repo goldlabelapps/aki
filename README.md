@@ -1,9 +1,7 @@
 # AKI
+## Abgeschottete künstliche Intelligenz (Air-gapped AI)
 
-## Abgeschottet KI
-### Ringfenced AI powered Document Management for SMEs
-
-## Ollama and Phi-3: Local AI Models
+#### Ollama and Phi-3: Local AI Models
 
 This project uses [Ollama](https://ollama.com/) to run large language models (LLMs) locally, ensuring your data never leaves your machine. Ollama is an open-source tool that makes it easy to run and manage LLMs on your own hardware.
 
