@@ -1,17 +1,25 @@
-# AKI°
-## Abgeschottete künstliche Intelligenz (Air-gapped AI)
+
+## AKI° Abgeschottete künstliche Intelligenz (Air-gapped AI)
+
+AKI° is an open-source document assistant designed to help comply with legal and regulatory requirements when working with sensitive documents. 
+
+By running all AI processing locally, AKI° ensures that confidential files and prompts never leave your device—helping you avoid accidental data leaks and stay on the right side of the law (e.g., GDPR, attorney-client privilege, or other professional secrecy obligations). 
+
+Upload PDFs, extract their text, and ask an AI to summarise or answer questions about them—all powered by a local Large Language Model (LLM) via [Ollama](https://ollama.com).
 
 #### Ollama and Phi-3: Local AI Models
 
-This project uses [Ollama](https://ollama.com/) to run large language models (LLMs) locally, ensuring your data never leaves your machine. Ollama is an open-source tool that makes it easy to run and manage LLMs on your own hardware.
+This project uses [Ollama](https://ollama.com/) to run large language models (LLMs) locally, ensuring your data never leaves your machine. Ollama is an open-source tool that lets you run and manage LLMs on your own device.
 
-### What is Ollama?
+#### What is Ollama?
+
 Ollama is a platform for running open-source LLMs locally. It provides a simple way to download, run, and interact with models like Llama, Phi-3, and others, without sending data to external servers.
 
-### What is Phi-3?
+#### What is Phi-3?
+
 Phi-3 is a family of lightweight, high-performance language models developed by Microsoft. In this project, you can run Phi-3 locally using Ollama for private, fast, and secure AI-powered document management.
 
-### How to Install Ollama and Phi-3
+#### How to Install Ollama and Phi-3
 
 1. **Install Ollama**
 	- Visit [https://ollama.com/download](https://ollama.com/download) and download the installer for your operating system (macOS, Windows, or Linux).
@@ -38,61 +46,43 @@ Phi-3 is a family of lightweight, high-performance language models developed by 
 
 **Note:** The `package.json` includes scripts to start Ollama and run these models for convenience.
 
----
-
-> This Private repo contains a Ring-Fenced environment which runs on a local LLM alongside a Node front & backend
-
-```
-[GIN] 2025/07/29 - 16:27:52 | 200 |          1m2s |       127.0.0.1 | POST     "/api/generate"
-time=2025-07-29T16:28:09.214+02:00 level=WARN source=runner.go:128 msg="truncating input prompt" limit=4096 prompt=6280 keep=4 new=4096
-```
-
-
-
 #### Test Prompts
 
-> Some simple propmts to try giving the LLM. Try these example prompts to see if AKI can give a sensible answer
+> Some simple propmts to try giving the LLM. See if AKI can give a sensible answer
 
 Explain what machine learning weights are in simple terms
 
 Wie könnten große Sprachmodelle deutschen Anwaltskanzleien bei der Recherche helfen?
 
-What risks arise if companies send confidential files to a public AI service like ChatGPT?
 
-### General legal reasoning
+
+#### General legal reasoning
+
+What does the GDPR mean for a law firm in Europe that processes personal data?
+
+What risks arise if companies send confidential files to a public AI service like ChatGPT?
 
 Erkläre in einfachen Worten, was das Berufsgeheimnis für deutsche Rechtsanwälte bedeutet.  
 
-Explain in simple terms what professional secrecy means for German lawyers.
-
-
+Explain in simple terms what professional secrecy means for UK lawyers.
 
 Welche Pflichten zur Vertraulichkeit haben deutsche Kanzleien gegenüber ihren Mandanten?  
 
 What confidentiality obligations do firms have toward their clients?
 
-
-
 Was bedeutet DSGVO für eine Anwaltskanzlei in Deutschland, die personenbezogene Daten verarbeitet?  
 
-What does the GDPR mean for a law firm in Europe that processes personal data?
 
----
 
-## What is AKI?
+#### Features
 
-AKI is an open-source, privacy-first document assistant. Upload PDFs, extract their text, and ask an AI to summarise or answer questions about them — all powered by a local Large Language Model (LLM) via [Ollama](https://ollama.com). Your files and prompts never touch a third-party server.
-
-**Key features**
 - 📄 Upload and manage PDF documents
 - 🔍 Automatic text extraction (native text layer + OCR fallback)
 - 🤖 AI summarisation powered by a local LLM (phi3 by default)
 - 🗄️ SQLite database — zero external database setup
-- 🌐 Next.js frontend + Express backend — both written in TypeScript
+- 🌐 TypeScript Next.js frontend + Express backend
 
----
-
-## Architecture
+#### Architecture
 
 ```
 Browser  ──►  Next.js frontend   (http://localhost:1975)
@@ -129,8 +119,6 @@ sudo apt-get install poppler-utils
 scoop install poppler
 ```
 
----
-
 ## Quick Start
 
 ### 1. Clone the repository
@@ -158,7 +146,7 @@ ollama pull phi3
 > **Tip:** You can swap to a different model by editing `start.mjs` and the
 > model name in `aki-backend/src/routes/ki/summarise.ts`.
 
-### 4. Start AKI
+### 4. Start AKI°
 
 ```bash
 yarn start
@@ -174,8 +162,6 @@ This command starts four concurrent processes in your terminal:
 | Express dev server | Backend API on port **4000** |
 
 Your browser will open automatically at <http://localhost:1975/database/table/pdfs> after ~5 seconds.
-
----
 
 ## Running services individually
 
@@ -195,8 +181,6 @@ cd aki-backend && yarn dev
 # Frontend Next.js watch
 cd aki-frontend && yarn dev
 ```
-
----
 
 ## Docker (alternative setup)
 
